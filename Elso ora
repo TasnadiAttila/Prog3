@@ -22,3 +22,40 @@
     (max3 a b c)
     (max2 a b))
 (writeln (max 11 32 43 4))
+
+;conditionals = feltételes utasítások
+;if 
+;cond
+;van olyan, hogy utasítás
+; vagy minden kifejezés
+;Java: x = 1; ez egy utasítás
+;          1 ez egy kifejezés
+;kifejezésnek 2 attribútuma van - típusa és értéke 
+;minden aminek van típusa értéke és típusa az 
+;kifejezés - expression
+;utasítás - statement 
+;racketban minden kifejezések kivéve define, az utolsó kif értékte a visszatérési érték
+;define-on belül is lehet define ha lokális változót akarunk, itt az x2 egy lokális változó
+(define (inc x)
+    (define x2 (+ x 1))
+    x2)
+(writeln (inc 8))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
