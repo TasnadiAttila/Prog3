@@ -8,9 +8,17 @@
 (define (square x) (* x x ))
 (define (add x y ) (+ x y))
 (define (multiplication x y) (* x y))
-(define (max a b)
+(define (max2 a b)
     (if (> a b)
     a
     b))
-(writeln (max 5 6))
-(writeln (max 8 6))
+(writeln (max2 5 6))
+(writeln (max2 8 6))
+
+;if szintaxisa:
+; (if (feltétel) érték_ha_igaz érték_ha_hamis)
+
+(define (max4 a b c d)
+    (max3 a b c)
+    (max2 a b))
+(writeln (max 11 32 43 4))
