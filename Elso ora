@@ -59,9 +59,24 @@
 
 ;conditional
 
+(define (tipus x)
+    (cond
+        [(integer? x) "Integer"]
+        [(number? x) "szám"]
+        [(string? x) "sztring"]
+        [(list? x) "lista"]
+        [else "valami mas"]
+        ))
 
+(writeln (tipus true))
+;cond szintaxisa 
+;Ö
+(define (id x)
+    (set!  count (+ count 1))
+    x)
+(define (square x) (* (id x) (id x)))
 
-
+;set! egy változó értékét megváltoztatni
 
 
 
