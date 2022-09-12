@@ -14,7 +14,9 @@
     b))
 (writeln (max2 5 6))
 (writeln (max2 8 6))
-
+(define (max3 a b c)
+    (define z (max2 a b))
+    (max2 z c))
 ;if szintaxisa:
 ; (if (feltétel) érték_ha_igaz érték_ha_hamis)
 
@@ -42,10 +44,20 @@
 (writeln (inc 8))
 
 
+;max 5 lokális változóval
 
+(define (max5 a b c d e)
+    (define r (max4 a b c d))
+    (max2 r e))
+(writeln (max5 1 2 3 4 5))
 
+;max6
+(define (max6 a b c d e f)
+    (define r (max5 a b c d e))
+    (max2 r f))
+(writeln (max6 1 2 3 4 5 6))
 
-
+;conditional
 
 
 
