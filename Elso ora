@@ -1,0 +1,16 @@
+(define x 1 )
+(define (f x) (+ x 1 ))
+(define g (lambda (x) (+ x 1 )))
+(writeln x)
+(writeln (f 5))
+(writeln (g 5))
+; fg hívás szintaxisa: (fg neve akt param lista)
+(define (square x) (* x x ))
+(define (add x y ) (+ x y))
+(define (multiplication x y) (* x y))
+(define (max a b)
+    (if (> a b)
+    a
+    b
+(writeln (max 5 6))
+(writeln (max 8 6))
