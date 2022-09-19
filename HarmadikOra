@@ -1,0 +1,69 @@
+;nincs for
+(define (myfor x p)
+    (if (p x)
+    (writeln x)
+    void)
+    (if (< x 100) ;bazis feltétel
+    (myfor (+ x 1) p)
+    void))
+;kiiratás a mellékhatás itt
+;ez valami mellékhatást csinál: amikor egy függvény megváltoztatja a körtnyezetét (globális változóba,képernyőre,nyomtatóba, portra kiküld bármit)
+;vissza kéne adni a listát
+
+
+;void ha nem kell else
+;farok rekurzív fg 
+;tail recursion
+;a farok reku fg-ből a futattó rendszer ciklust csinál
+;tehát a reku-an, hanem mintha ciklus lenne
+;ha imperatívan csinálok végtelen reku-t, akkor biztosan elfogy a stack
+;mert minden hívás előtt a verembe kell meteni többek közt a regiszterek értékét
+;illetve a lokális változókat
+;mitől farok reku a farok reku fg?
+;Attól, hogy az autólsó hívás a rekurzív hívás
+
+;prim szam
+(define (prim? x)
+    (define gyok (sqrt x))
+    (if (= x 1) 
+    #f
+    (prim2 x 2 gyok)))
+
+(define (prim2 x i gyok)
+    (if (<= i gyok)
+        (if (= (modulo x i) 0)
+        #f
+        (prim2 x (+ x 1) gyok))
+        #t))
+
+(myfor 1 prim?)
+
+(myfor 1 (lambda (x)(even? x)))
+
+
+;rekurzió: f hívja f
+;olyan függvény amely önmagát hívja 
+
+
+
+;LISTAK
+;ez egy összetett adatszerkezet
+;Ha találkozok egy új adatszerkezettel a következő 5 kérdést kell feltennem:
+; - Összetett vagy egyszerű - Többit csak akkor ha összetett
+; - Homogén vagy Inhomogén - Homogén ha egynemű dolgok (típus)
+; - Folyamatos vagy szészort - 
+; - Soros(szekvenciális) vagy direkt/random -  
+; - rekurzív vagy nem rekurzív
+;egy adatszerkezet akkor rekurzív, ha egy összefüggő része ugyan olyan típusú mint az egész
+;Tömb:  összetett, homogén, folytonos, direkt, nem reku
+;Lista: összetett, inhomogén(CSAK A RACKETBE), szétszort(elrejtik), soros, rekurzív
+;Lista: fejből és sorokból áll, ahol a lista farka lista
+;(1 2 3), ennek a listának a feje: 1 a farka:(2,3)
+;                            head      tail
+;(1 "alma" 1 5),    feje: 1     farka: ("alma" 1 5)
+;(3.14 "körte"),    feje: 3.14  farka: ("körte"), egy elemű lista
+;                                      "körte" , "string"
+
+;(0 11),            fej: 0      farka: (11)
+(writeln (first (list 1 2 3)))
+(writeln (rest (list 1 "alma" 1 5)))
