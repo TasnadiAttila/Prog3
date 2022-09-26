@@ -1,0 +1,121 @@
+(writeln (list 1 "alma" 2))
+(define x (list 1 "alma" 2))
+(writeln x)
+;racket lista literál szintaxisa:
+;(list lista_elemek)
+;literál -> konkrét érték
+(writeln (first x))
+;java tömb literál
+;int[] tömb = {1,2,3}
+(writeln (rest x))
+(writeln (car x))
+(writeln (cdr x))
+(writeln (car '(1 . 2)))
+;(writeln (car (cons 1 2)))
+;(cons 1 2) = '(1 . 2)
+
+(writeln (cdr '(1 . 2)))
+;a lista fejből és farokból áll
+;a lista farka a maradék
+;head - tail
+;first - last
+
+(writeln (+ 1 2))
+(writeln (1 . + . 2))
+(writeln (4 . / . 2))
+;lista párok párjai
+(writeln (car '(4 . / . 2)))
+(writeln (cons "/" (cons 4 (cons 2 '()))))
+;cons jelentése = konstruktor
+;ha kap egy elemet és listát
+;akkor abból egy listát csinál
+;aminek a feje az elem, a farka a lista
+;pl: 
+(writeln (cons 1 (list 2 3 )))
+(writeln (cons "alma" (list "körte")))
+(writeln (cons "alma" "körte"))
+;az első vissza ad egy listát a második egy párt(36,37 sor)
+;cons-nak két féle használata van
+;(cons elem lista) - litát készít
+;(cons elem elem) - párt készít
+;lényegében a lista az olyan pár, aminek első eleme:
+;elem
+;lényegében a lista az olyan pár, aminek második eleme:
+;listsa
+;innentől első használatát nézzük
+;hogy kell egy elemű listát létrehozni
+;az 1 elemű listának mi a farka? üres lista4
+(writeln (cons 1 null))
+(writeln (cons 1 '() ))
+(writeln (cons 1 (list)))
+;cons összerakom
+;de akár szét is szedhetem 
+;szétszedéshez használhatjuk, egyelőre, a first, rest
+(writeln (first (cons 1 (list 2 3))))
+(writeln (first (list 1)))
+;egyelemű lista farka, üres lista
+(writeln (first (list 1 2)))
+(writeln (rest (list  1 2)))
+;LISTA FARKA MINDIG LISTA
+;lista egy rekurzív adatszerkezet mert a lista farka egy lista
+;listát rekurzívan dolgozok fel, ahol a bázis feltétel 
+;azaz, hogy a lista üres e
+(writeln (null? (list 1 2)))
+(writeln (null? (list)))
+;mylength lst, vissza adja, hogy hány elemből áll a lst nevű lista
+;(define (mylength lst)
+;    (cond
+;        [(null? list) 0]
+;        [else
+;            (define farok (rest lst))
+;            (define farok-ertek (mylength farok))
+;            (+ 1 farok-ertek)]))
+;meghívom önmagamat a farokra ha nem üres
+;(mylenght (list ("alma" 1 3.14)) = 3
+;(writeln (mylength (list "alma" 2 3.14)))
+;(writeln (mylength (list "alma" 2 3)))
+;két féle feltételes utasítás
+;if - két ágú
+;cond - több ágú(javaban switch)
+;sintax (cond [logikai kif])
+;lehet else ág is
+;első olyan ág fut le melyenek a feltétele igaz
+(define s (list))
+(define (tipus x)
+    (cond
+        [(number? x) "szam"]
+        [(integer? x) "int"]
+        [(string? x) "sztring"]
+        [(list? x) "lista"]
+        [(null? x) "üres l"]
+        [else "valami mas"]
+        ))
+(writeln (tipus '()))
+; a lista feldolgozás receptje
+;(define (valami-fontos lst)
+;   (cond
+;       [(null?) feladat-függő
+;       [else
+;           (define farok (rest lst))
+;           (define farok-érték (valami-fontos farok))
+;           (feladat-függő farok értéke)]))
+;sum lst, visszadja az lst-ben lévő számok összegét
+(define (sum lst)
+    (cond
+        [(null? lst) 0]
+        [else
+            (define farok (rest lst))
+            (define farok-ertek (sum farok))
+            (+ (first lst) farok-ertek)]))
+(writeln (sum (list 5 6 2)))
+
+
+(define (sum lst)
+    (cond
+        [(null? lst) 0]
+        [else
+            (define farok (rest lst))
+            (define farok-ertek (sum farok))
+            (+ (first) farok-ertek)]))
+
+(writeln (sum (list 5 6 43 2)))
