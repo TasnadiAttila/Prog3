@@ -18,28 +18,27 @@
         true
         false))
         
-(writeln (egy-elemu-e? ( list 1 2)))
+(define (my-min lst)
+    (cond
+        [(empty? lst) void ]
+        [(egy-elemu-e? lst)(first lst)]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define farok-ertek (my-min farok))
+            (if (< farok-ertek fej) farok-ertek fej)]))
+(writeln (my-min(list 1 2 3)))   
 
-;(define (my-min lst)
-;    (cond
-;        [(empty? lst)(void)]
-;        [(egy-elemu-e? lst)(first lst)]
-;        [else
-;            (define fej (first lst))
-;            (define farok (rest lst))
-;            (define fark-ertek (my-min))
-;            (if (< farok-ertek fej) farok-ertek fej)]))
-;(writeln my-min(lst 1 2 3))    
-;(define (my-min lst)
- ;   (cond
-  ;      [(empty? lst)(void)]
-   ;     [(egy-elemu-e? lst)(first lst)]
-    ;    [else
-     ;       (define fej (first lst))
-      ;      (define farok (rest lst))
-       ;     (define fark-ertek (my-min))
-        ;    (if (< farok-ertek fej) farok-ertek fej)]))
-;(writeln (my-min (list 1 2 3 4 5)))
+(define (my-max lst)
+    (cond
+        [(empty? lst) void ]
+        [(egy-elemu-e? lst)(first lst)]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define farok-ertek (my-max farok))
+            (if (> farok-ertek fej) farok-ertek fej)]))
+(writeln (my-max(list 1 2 3)))    
 
 ;(my-append lst1 lst2) összefűzi a két paramétert, lst1 után teszi lst2-t
 ;arany szabály: ha két listám van, akkor általában csak az egyiket kell
@@ -78,21 +77,21 @@
 ;paros szures?
 ;(odd-filter lst)
 ;a listaban levo paros szamok listajat adja vissza
-;(define (odd-filter S)
-;    (cond
-;        [(empty? S)(S)]
-;        [else
-;            (define fej (first S))
-;            (define farok (rest S))
-;            (define farok-ertek (odd-filter farok))
- ;           (if (odd? fej)
-;               (cons fej farok-ertek)   ;megtartom a fejet
-;               farok-ertek
-;               )]))          ;eldobom a fejet
-;(writeln (odd-filter(list 1 2 3 4 5)))
+(define (odd-filter S)
+    (cond
+        [(empty? S) S ]
+       [else
+            (define fej (first S))
+            (define farok (rest S))
+            (define farok-ertek (odd-filter farok))
+            (if (odd? fej)
+               (cons fej farok-ertek)   ;megtartom a fejet
+             farok-ertek
+              )]))          ;eldobom a fejet
+(writeln (odd-filter(list 1 2 3 4 5)))
 (define (even-filter G)
     (cond
-        [(empty? G)(G)]
+        [(empty? G) G]
         [else
             (define fej (first G))
             (define farok (rest G))
