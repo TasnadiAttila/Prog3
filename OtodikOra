@@ -1,0 +1,104 @@
+(writeln "Welcome to JDoodle!!")
+(define (sum lst)
+    (cond
+        [(null? lst) 0]
+        [else
+            (define farok (rest lst))
+            (define farok-ertek (sum farok))
+            (+ (first lst) farok-ertek)]))
+(writeln (sum (list 5 6 2)))
+
+;lista legnagyobb eleme
+;(max lst): visszadja az lst lista legnagyobb elemét
+;üres listának nincs legnagyobb eleme
+;az egy elemű list, legnagyobb eleme az az egy elem
+;(egy-elemű-e? lst): akkor ad vissza igazat, ha a listában csak egy elem van
+(define (egy-elemu-e? lst)
+    (if ( = 1 (length lst))
+        true
+        false))
+        
+(writeln (egy-elemu-e? ( list 1 2)))
+
+;(define (my-min lst)
+;    (cond
+;        [(empty? lst)(void)]
+;        [(egy-elemu-e? lst)(first lst)]
+;        [else
+;            (define fej (first lst))
+;            (define farok (rest lst))
+;            (define fark-ertek (my-min))
+;            (if (< farok-ertek fej) farok-ertek fej)]))
+;(writeln my-min(lst 1 2 3))    
+;(define (my-min lst)
+ ;   (cond
+  ;      [(empty? lst)(void)]
+   ;     [(egy-elemu-e? lst)(first lst)]
+    ;    [else
+     ;       (define fej (first lst))
+      ;      (define farok (rest lst))
+       ;     (define fark-ertek (my-min))
+        ;    (if (< farok-ertek fej) farok-ertek fej)]))
+;(writeln (my-min (list 1 2 3 4 5)))
+
+;(my-append lst1 lst2) összefűzi a két paramétert, lst1 után teszi lst2-t
+;arany szabály: ha két listám van, akkor általában csak az egyiket kell
+;reku-an feldolgozni
+;(my-append (list 5 4 1)(list 5 4 1)) = (list 5 4 1)
+;(my-append (list "alma" "beka") (list 5 4 1)) = (list "alma" "beka" 5 4 1)
+(define (my-append A B)
+    (cond
+        [(empty? A)B]
+        [else
+            (define fej-A (first A))
+            (define farok-A (rest A))
+            (define farok-ertek (my-append farok-A B))
+            ;imsetles cons:
+            ;(cons fej farok) létrehozza a listát aminek a feje a fej, farka farok
+            (cons fej-A farok-ertek)]))
+(writeln (my-append (list "alma" "beka")(list 5 4 1)))
+;(my-reverse (list "alma" 5 "beka")) = (list "beka" 5 "alma")
+;hint: kell az append
+
+(define (my-rev C) 
+    [if (null? C) 
+        null 
+    [my-append (my-rev (rest C))(list (first C))]])
+(define (my-rev2 D)
+    (cond
+        [(empty? D)(D)]
+        [else
+            (define fej (first D))
+            (define farok (rest D))
+            (define farok-ertek (my-rev farok))
+            (my-append farok-ertek (list fej))]))
+(writeln (my-rev2 (list "a" 5 "b")))
+(writeln (my-rev (list "a" 5 "b")))
+
+;paros szures?
+;(odd-filter lst)
+;a listaban levo paros szamok listajat adja vissza
+;(define (odd-filter S)
+;    (cond
+;        [(empty? S)(S)]
+;        [else
+;            (define fej (first S))
+;            (define farok (rest S))
+;            (define farok-ertek (odd-filter farok))
+ ;           (if (odd? fej)
+;               (cons fej farok-ertek)   ;megtartom a fejet
+;               farok-ertek
+;               )]))          ;eldobom a fejet
+;(writeln (odd-filter(list 1 2 3 4 5)))
+(define (even-filter G)
+    (cond
+        [(empty? G)(G)]
+        [else
+            (define fej (first G))
+            (define farok (rest G))
+            (define farok-ertek (even-filter farok))
+            (if (even? fej)
+                (cons fej farok-ertek)
+                farok-ertek
+                )]))
+(writeln (even-filter (list 1 2 3 4 5 6)))
