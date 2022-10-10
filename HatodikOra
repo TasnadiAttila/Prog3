@@ -1,0 +1,126 @@
+;;VALSZEG LESSZ ZH-ba a MyMember
+;Akkumulátor
+;az akkumulátorba gyűjtjük a részeredményeket
+;az akkumulator egy parameter, általában ez az utolsó
+;irjuk meg a sum-át hagyományosan, majd akkumulátorral
+(define (sum lst)
+    (cond
+        [(empty? lst) 0]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define farok-ertek (sum farok))
+            (+ fej farok-ertek)])) ;ez a rész feladat függő
+            
+(writeln (sum(list 5 3 2)))
+
+;akksi recept: az akkuban van a részeredmény
+;ha üres a lista, akkor akkuban a végső részeredmény van, azaz az eredmény van, ezért, az  akku-t kell visszaadni
+;egyébként az akku-ban számolom a részeredményeket
+;mi legyen az akku kezdő érétke?
+;mivel lehet, hogy a lista eleve üres, ezért az akku kezdőértéke ugyanaz, mint alap esetben az üres listás eredény
+;jelen esetben: 0
+;mivel az akku egy paraméter, ezért írok egy 1 paraméterest, ami hívja a 2 paramosta 
+;úgy hogy megmondja az akku kezdőértékét
+
+(define (sum-v2 lst) (sum-v2-akku lst 0))
+(define (sum-v2-akku lst akku)
+    (cond
+        [(empty? lst) akku]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define akku2 (+ fej akku)) ;recept szerinte akku-2-t ugyan úgy számolom mint az alapeset végeredményét, de farok-ertek helyett, azt kell írni, hogy akku
+            (sum-v2-akku farok akku2)]))
+(writeln (sum-v2 (list 5 3 2)))
+
+;akkus-s azért használunk mert az farok rekurzív
+;egy fg akkor farok reku ha az utolsó hívás a rekurzív hívás
+;a farok reku azért jó, mert abból nagyon könnyen lehet for ciklust fordítani, azaz a végrehajtáshoz nem kell verem
+
+
+(define (length-v1 lst)
+    (cond
+        [(empty? lst) 0]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define farok-ertek (length-v1 farok))
+            (+ 1 farok-ertek)])) 
+(writeln (length-v1 (list 5 4 3 2 1)))
+
+;checklist:
+; -I- egy paramos hívja a két paramosat, úgy hogy megadja akku kezdő értékét
+; -II- két paramosnál az utolsó param az akku
+; -III- akku2-t úgy kell számolni, mint simát, csak farok-ertek helyett akkut-kell irni
+
+(define (length-v2 lst) (length-v2-akku lst 0)) ;- I
+(define (length-v2-akku lst akku)               ;- II
+    (cond
+        [(empty? lst) akku]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define akku2 (+ 1 akku))
+            (length-v2-akku farok akku2)]))
+(writeln (length-v2 (list 5 4 3 2 1)))
+
+
+
+(define (append A B)
+    (cond
+        [(empty? A) B]
+        [else
+            (define fejA (first A))
+            (define farokA (rest A))
+            (define farok-ertek (append farokA B))
+            (cons fejA farok-ertek)]))
+
+(writeln (append (list "a" "A" "b")(list 4 2 2)))
+;checklist:
+; -I- 2 paramos hívja a 3 paramosat, úgy hogy megadja akku kezdő értékét
+; -II- 3 paramosnál az utolsó param az akku
+; -III- akku2-t úgy kell számolni, mint simát, csak farok-ertek helyett akkut-kell irni
+
+;(define (append2 A B)(appendAkku A B B))
+;(define (appendAkku A B akku)
+;    (cond
+;        [(empty? A) (append (reverse akku) B)]
+;        [else
+;            (define fejA (first A))
+;            (define farokA (rest A))
+;            (define akku2 (append2 farokA akku))
+;            (appendAkku farokA B akku2)]))
+;(writeln (append2 (list "a" "b" "c")(list "d" "e" "f")))
+            
+
+
+;csináljnuk olyat, ahol nem számít a sorrend, az a: hamlaz
+;nincs külön halmaz adatszerk
+;a listát használjuk halmazként
+; mint halmaz, ezek a listák egyenlőek
+; (list 1 2 3) = (list 2 3 1) = (list 1 2 1 3)
+; a halmaz kezelés alap művelete, eleme-e angol: member
+;(writeln (member 5 (list 1 2 5 "alma")))
+;a racketben ami nem false az true 4 
+(define (eleme x lst)
+    (if (member x lst)
+    true
+    false))
+(writeln (eleme 5 (list 1 2 5 "alma")))
+
+;üres listának nincs eleme 
+;ezért az empty hamisat ad
+
+;ha nemüres a lista, szétszedem fejre,farokra, ha a fej megegyezik x-el akkor üres egyébként hívás
+(define (myMember x lst)
+    (cond
+        [(empty?) false]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (if (= fej x)
+                true
+                (myMember x farok))]))
+(writeln (myMember 2 (list 4 5 6 7 12))) 
+
