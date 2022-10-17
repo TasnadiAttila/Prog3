@@ -1,0 +1,104 @@
+;a listát halmazként is lehet használni
+;minden halmaz műveletet az eleme-e predikátumra vezetek vissza
+;beépített változata
+;(member elem lista)
+;pl
+(writeln (member 1 (list 2 1 3)))
+(if "asd" (writeln "igaz") (writeln "hamis"))
+(writeln (member 5 (list 2 1 3)))
+
+;(részhalmaz A B): A részhalmaza B-nek, ha A minden eleme benne van B-ben
+;(részhalmaz empty B), ez igaz mert az üres halmaz mindennek a részhalmaza
+;(részhalmaz empty empty) igaz, mert üres mindennek részhalmaza, az üresnek is
+;
+;stratégia: az A listát szedem szét
+;ha A üres, akkor igazat adunk vissza: true
+;ha nem üres, szétszedem fejre és farokra a szokásos módon
+;meghívom a önmagam a farokra így kapom meg a farok értéket
+;fejbél és a farok értékből számolom valahogyan a visszatéréséi értéket 
+(define (reszhalmaz A B)
+    (cond
+        [(empty? A) true]
+        [else
+            (define fej (first A))
+            (define farok (rest A))
+            (define farok-ertek (reszhalmaz farok B))
+            (if (and (member fej B) farok-ertek)
+                true
+                false
+                )]))
+                
+(writeln (reszhalmaz (list 1 2 3 6)(list 3 2 1)))
+;same with akku  
+(define (reszhalmaza-V2 A B) (reszhalmaza-akkus A B true))
+(define (reszhalmaza-akkus A B akku)
+   (cond
+        [(empty? A) akku]
+        [else
+            (define fej (first A))
+            (define farok (rest A))       
+            (define akku2 (if (member fej B) akku false))
+            (reszhalmaza-akkus farok B akku2)]))
+(writeln (reszhalmaza-V2 (list 1 2 3)(list 5 4 2 3 1)))
+;(intersection A B ): metszet
+;ez egy halmazt ad vissza amiben azok az elemek vannak ami benne van A-ban és B-ben is
+;hint:
+;(intersecion empty B) = empty
+;ha A feje benne van B-ben akkor megtartom
+;(cons fej farok-ertek)
+;ha nincs bene eldomom azzaz simán vissza adom a farok erteket
+(define (intersection A B)
+    (cond
+        [(empty? A) empty]
+        [else
+            (define fej-A (first A))
+            (define farok-A (rest A))
+            (define farok-ertek (intersection farok-A B))
+            (if (member fej-A B)
+                (cons fej-A farok-ertek)
+                farok-ertek
+                )]))
+                
+(writeln (intersection (list 5 3 4)(list 5 3 2 6)))
+(define (intersection-V2 A B) (intersection-akkus A B empty))
+(define (intersection-akkus A B akku)
+    (cond
+        [(empty? A) akku]
+        [else
+            (define fej (first A))
+            (define farok (rest A))
+            (define akku2 
+                (if (member fej B) 
+                (cons fej akku) 
+                akku))
+            (intersection-akkus farok B akku2)]))
+            
+(writeln (intersection-V2 (list 5 3 4)(list 5 3 2 6)))
+
+;új anyagrész 
+;magasabb rendű függvények
+;(pleda: map
+;(map f lista): meghívja az f függvényt a lista minden elemére 
+;és az így előálló 
+(define (inc x)(+ x 1))
+(writeln (map inc (list 1 2 3 4 5)))
+
+;igazán nehéz feladat (5)
+;powerset A = A minden részhalmazát tartalmazza
+;(powerset empty) = (list empty)
+;(powerset (list 1)) = (list empty (list 1))
+;(powerset (list 1 2)) = (list empty (list 1) (list 2)(list 1 2))
+;kettő hatványozva a lista elemszámával
+;hint: kell hozza map
+(define (powerset lst)
+    (cond
+        [(empty? lst) (list empty)]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            ]))
+
+
+
+
+
