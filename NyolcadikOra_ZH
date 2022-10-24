@@ -1,0 +1,130 @@
+ZH1: 
+length
+sum
+filter
+unio
+append
+akkus valtozatok
+powerset
+;(powerset)
+;(powerset (list)) = (list (list ))
+;(powerset (list 2)) = (list (list )(list 2))
+;(powerset (list 1 2)) = (list (list )(list 1)(list 2)(list 1 2))
+;
+;kell map 
+;saját szavaimmal: a visszatérési érték egyik fel a farok-értékkel, a
+;másik fele pedig a farok-érték minden eleme kibővítve a fejjel
+;(map f lista): a lista minden elemére futtatja f-et
+;egy nehéz sor:
+;hint: (define (putfej lst) (cons fej lst ))
+;       (map)
+;(define (inc x)(+ x 1))
+;(writeln (map inc (list 1 2 3 4)))
+
+(define (powerset lst)
+    (cond
+        [(empty? lst) (list (list ))]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define farok-ertek (powerset farok))
+            (define (putFej lst) (cons fej lst)) ;kell egy belső függvény(ez a tricky rész)
+            (append farok-ertek (map putFej farok-ertek))]))
+(writeln (powerset (list 1 2)))
+
+;some kind of map
+;írj olyan map-et ami a listában lévő elemek négyzetét adja vissza listként
+(define (negyzet x)(* x x))
+(writeln (map negyzet (list 1 2 3 4 5)))
+
+;van egy listám ami listákat tartalmaz, szeretnénk egy listát amibe ezek hossza van
+;milyen map hívást csináljak
+
+(writeln (map length (list (list 1 2 3 )(list 4 5)(list 1 2 3 4))))
+
+;saját map
+
+
+;(writeln (map sqr (list )))
+;map egy fg és egy lista
+;(define (myMap fg lst)
+;    (cond
+;        [(empty? lst) empty]
+;        [else
+;            (define fej (first lst))
+;            (define farok (rest lst))
+;            (define farok-ertek (myMap fg farok))
+;            (cons (fg fej) farok-ertek)]))
+
+
+
+(define (mymap fg lst)
+    (cond
+        [(empty? lst) empty]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define farok-ertek (mymap fg farok))
+            (cons (fg fej) farok-ertek)]))
+
+(writeln (mymap length (list (list 1 2 3 )(list 4 5)(list 1 2 3 4))))
+
+
+
+
+;?minta illesztés bármi is legyen
+;mintaillesztés, fánfarok
+; a mintaillesztés nagyon jó dolog, sőt szuper
+; kár hogy, imperatív oldalon nincs, vagy van de nem úgy, csak a hülye regexp van, ami gagyi
+;(match kif
+;   [minta1 kif-ha-illeszkedik-minta1]
+;   [minta2 kif-ha-illeszkedik-minta2]
+;   ...
+;   [else kif-egyébként])
+;szemantikája a mintában lévő változók nevek értéket kapnak
+;ami szuper jó
+;ez lényegében mellékhatás, de ez megendgedett
+;gyakorlatban listakra hasznaljuk
+;irjuk meg a legth-et
+
+(define (CONDlength lst)
+    (cond
+        [(empty? lst) 0]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define farok-ertek (CONDlength farok))
+            (+ 1 farok-ertek)]))
+
+(define (Mlength lst)
+    (match lst
+        [(list ) 0]
+        [(cons fej farok)
+            (define farok-ertek (Mlength farok))
+            (+ 1 farok-ertek)]))
+(writeln (Mlength (list 1 2 3 4 5)))
+
+;vannak érzéki csalódások, a (list 1 2 3 4 5) egy érzéki csalódás
+;igazabol (cons 2 (cons 3 (cons 4 (cons 5 empty))))
+
+;mintaillesztes minta 2 eleme
+
+(define (sec lst)
+    (match lst
+        [(cons x (cons y farok)) y ]
+        [else void]))
+
+(writeln (sec (list 1 2)))
+
+;sum match el
+
+(define (msum lst)
+    (match lst
+        [(list ) 0]
+        [(cons fej farok) ;szétszedem fej farok
+            (define farok-ertek (msum farok))
+            (+ fej farok-ertek)]))
+(writeln (msum (list 1 2 3)))
+
+
+
