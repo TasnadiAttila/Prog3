@@ -1,0 +1,223 @@
+; length - sum - append - filter - member - union - powerset - akkus változatok
+
+
+; length
+
+(define (mylength lst)
+   (cond
+   [(empty? lst) 0]
+   [else
+   (define farok (rest lst))
+   (define farok-ertek (mylength farok))
+   (+ 1 farok-ertek)])
+)
+
+(writeln (mylength (list 1 2 3 4 5))) ; =5
+
+
+; sum
+
+(define (mysum lst)
+   (cond
+      [(empty? lst) 0]
+      [else
+      (define fej (first lst))
+      (define farok (rest lst))
+      (define farok-ertek (mysum farok))
+      (+ fej farok-ertek)]))
+
+(writeln (mysum (list 1 2 3 4 5))) ; =15
+
+
+; append
+
+(define (myappend A B)
+   (cond
+      [(empty? A) B]
+      [else
+         (define fejA (first A))
+         (define farokA (rest A))
+         (define farok-ertek (myappend farokA B))
+         (cons fejA farok-ertek)]))
+         
+(writeln (myappend (list 11 2 3 4 5) (list 9 6))) ; =(11 2 3 4 5 9 6)
+
+
+; filter
+
+(define (myfilter p lst)
+   (cond
+      [(empty? lst) (list )]
+      [else
+         (define fej (first lst))
+         (define farok (rest lst))
+         (define farok-ertek (myfilter p farok))
+         (if (p fej)
+            (cons fej farok-ertek)
+            farok-ertek)]))
+            
+(writeln (myfilter even? (list 11 2 3 4 5 9 6))) ; =(2 4 6)
+      
+
+; member
+
+(define (mymember x lst)
+   (cond
+      [(empty? lst) false]
+      [else
+         (define fej (first lst))
+         (define farok (rest lst))
+         (define farok-ertek (mymember x farok))
+         (if (= fej x)
+            true
+            farok-ertek)]))
+
+(writeln (mymember 11 (list 11 2 3 4 5 9 6))) ; =#t
+
+
+; union
+
+(define (myunion A B)
+   (cond
+      [(empty? A) B]
+      [else
+         (define fejA (first A))
+         (define farokA (rest A))
+         (define farok-ertek (myunion farokA B))
+         (if (member fejA farok-ertek)
+            farok-ertek
+            (cons fejA farok-ertek))]))
+            
+(writeln (myunion (list 11 2 3 4 5 6) (list 2 9 6 11))) ; =(3 4 5 2 9 6 11)
+
+
+; powerset
+
+(define (mypowerset lst)
+   (cond
+      [(empty? lst) (list (list ))]
+      [else
+         (define fej (first lst))
+         (define farok (rest lst))
+         (define farok-ertek (mypowerset farok))
+         (define (putfej lst) (cons fej lst))
+         (append farok-ertek (map putfej farok-ertek))]))
+         
+(writeln (mypowerset (list 1 2 3))) ; =(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3))
+
+
+; -----------------
+; akkus változatok:
+; -----------------
+
+
+; length
+
+(define (length-v2 lst) (length-akkus lst 0))
+(define (length-akkus lst akku)
+   (cond
+      [(empty? lst) akku]
+      [else
+         (define fej (first lst))
+         (define farok (rest lst))
+         (define akku2 (+ 1 akku))
+         (length-akkus farok akku2)]))
+         
+(writeln (length-v2 (list 1 2 3 4 5))) ; =5
+
+
+; sum
+
+(define (sum-v2 lst) (sum-akkus lst 0))
+(define (sum-akkus lst akku)
+   (cond
+      [(empty? lst) akku]
+      [else
+         (define fej (first lst))
+         (define farok (rest lst))
+         (define akku2 (+ fej akku))
+         (sum-akkus farok akku2)]))
+
+(writeln (sum-v2 (list 1 2 3 4 5))) ; =15
+
+
+; append
+
+(define (append-v2 A B) (append-akkus A B empty))
+(define (append-akkus A B akku)
+   (cond
+      [(empty? A) (append (reverse akku) B)]
+      [else
+         (define fejA (first A))
+         (define farokA (rest A))
+         (define akku2 (cons fejA akku))
+         (append-akkus farokA B akku2)]))
+         
+(writeln (append-v2 (list 11 2 3 4 5) (list 9 6))) ; =(11 2 3 4 5 9 6)
+
+
+; filter
+
+(define (filter-v2 p lst) (filter-akkus p lst (list )))
+(define (filter-akkus p lst akku)
+   (cond
+      [(empty? lst) akku]
+      [else
+         (define fej (first lst))
+         (define farok (rest lst))
+         (define akku2 (if (p fej)
+                           (cons fej akku)
+                           akku))
+         (filter-akkus p farok akku2)]))
+
+(writeln (filter-v2 even? (list 11 2 3 4 5 9 6))) ; =(6 4 2)
+
+
+; member
+
+(define (member-v2 x lst) (member-akkus x lst false))
+(define (member-akkus x lst akku)
+   (cond
+      [(empty? lst) akku]
+      [else
+         (define fej (first lst))
+         (define farok (rest lst))
+         (define akku2 (if (= x fej)
+                           true
+                           akku))
+         (member-akkus x farok akku2)]))
+
+(writeln (member-v2 11 (list 11 2 3 4 5 9 6))) ; =#t
+
+
+; union
+
+(define (union-v2 A B) (union-akkus A B B))
+(define (union-akkus A B akku)
+   (cond
+      [(empty? A) akku]
+      [else
+         (define fejA (first A))
+         (define farokA (rest A))
+         (define akku2 (if (member fejA akku)
+                           akku
+                           (append (list fejA) akku)))
+         (union-akkus farokA B akku2)]))
+
+(writeln (union-v2 (list 11 2 3 4 5 6) (list 2 9 6 11))) ; =(5 4 3 2 9 6 11)
+
+
+; powerset
+
+(define (powerset-v2 lst) (powerset-akkus lst (list (list ))))
+(define (powerset-akkus lst akku)
+   (cond
+      [(empty? lst) akku]
+      [else
+         (define fej (first lst))
+         (define farok (rest lst))
+         (define (putfej lst) (cons fej lst))
+         (define akku2 (append akku (map putfej akku)))
+         (powerset-akkus farok akku2)]))
+
+(writeln (powerset-v2 (list 1 2 3))) ; =(() (1) (2) (2 1) (3) (3 1) (3 2) (3 2 1))
