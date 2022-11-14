@@ -105,3 +105,14 @@ public class Main {
 
     }
 }
+-------------------------------------------------------------------------------
+Java-ba nevek lista
+Hello $nev!
+Minden nevnek monogram (nagy betuk)
+-------------------------------------------------------------------------------
+Map
+kulcs - nev
+fizetes - masik
+fizetes += fizetes 10%
+nev fizetes parok kiir
+-------------------------------------------------------------------------------
