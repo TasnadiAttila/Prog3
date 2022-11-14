@@ -1,0 +1,107 @@
+;reduce
+;A reduce egy magasabb rendű fv
+;mint minden magasabb rendű fg-nek ennek is van fg. paramétere
+;eddig 2 magasabb rendű fg-t tanultunk. Melyik ez a kettő?
+;map(f, lst), ahol az f egy bármilyen 1 paraméteres fg
+;filter(p, lst), ahop p egy bool tipusú paraméteres fg
+;néhány egszerű map-es példa
+;lista minden eleméhez +1
+;(define (inc x)(+ x 1))
+;(writeln (map inc (list 1 2 3 4 5)))
+;listák listájának hosszai
+;(writeln (map length (list (list 3 2 8)(list 1 5 6 2))))
+;(define (add a )(+ a 5))
+;(writeln (map add (list 1 2 3 4)))
+
+
+;(define nevek (list "Gábor" "Miklós" "Pál-Péter"))
+;(define hossz (sort (map string-length nevek) >))
+;(writeln (index-of 3 (list 1 2 3))) 
+
+;sajnos racketbe a reduce nem reduce hanem foldl-nek :(((
+;(define (reduce f2 neutralis lst)(foldl f2 neutralis lst))
+;(define (sum lst)(reduce add 0 lst))
+;(writeln (sum (list 1 2 3)))
+
+;filter reduce al
+;ism (fillter p lst) kiszűri azokat az elemeket, amire p igazad add
+(define (reduce f2 neutral lst)(foldl f2 neutral lst))
+(define (myfilter p lst)
+    (define (megtart-ha-igaz x A)
+        (if (p x)
+            (cons x A)
+            A))
+    (reverse
+    (reduce megtart-ha-igaz (list )lst)))
+(writeln (myfilter even? (list 1 2 3 4 5 6 7 8 9)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+package com.company;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Optional;
+import java.util.concurrent.CompletionException;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] tomb = {1, 2, 3};
+        //lambda notation, név nélküli fg-t hoz létre
+        //nyelv függetlenül: lamda x.x+1
+        //javaban miden collection-ből és tömbből is lehet stream-et csinálni
+        //a stream fg-ei gyakran fg paramétert várnak
+        //ami simá névnélküli
+        //ugyan ez racketban: (lamda (x) (+ x 1))
+        //javaban: x -> x+1
+        //c# x => x+1
+
+        Arrays.stream(tomb).
+                map(x -> x + 1).forEach(x -> System.out.println(x));
+        System.out.println("---");
+        ArrayList<Integer> list1 = new ArrayList<>();
+        list1.add(1);
+        list1.add(5);
+        list1.add(8);
+        //idáig volt collection, de innentől stream (akkor lehet map,filter)
+        list1.stream().map(x -> x + 1).
+                map(x -> x + 1).
+                filter(x -> x % 2 == 1).
+                forEach(x -> System.out.println(x));
+
+        System.out.println("---");
+
+        ArrayList<String> nevek = new ArrayList<>();
+        nevek.add("Attila");
+        nevek.add("Adam");
+        nevek.add("Krisztian");
+        int index2 = nevek.stream().map(String::length).
+                sorted(Comparator.reverseOrder()).
+                toList().
+                get(0);
+
+        int index = nevek.stream().
+                map(String::length).
+                toList().
+                indexOf(index2);
+        String leghoszabb = nevek.get(index);
+        System.out.println(leghoszabb);
+
+        /*
+    (define (reduce f2 neutral lst)(foldl f2 neutral lst))
+    (define (myfilter p lst)
+        (define fej (first lst))
+        (define farok (rest lst))
+        (define (megtart-ha-igaz x A)
+            (if (p x)
+                (cons x A)
+                A))
+            (reverse
+            (reduce megtart-ha-igaz (list )lst)))
+
+    (writeln (myfilter even? (list 1 2 3 4 5 6 7 8 9)))
+
+         */
+
+    }
+}
