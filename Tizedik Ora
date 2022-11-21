@@ -1,0 +1,89 @@
+;reduce 3 parameter
+;egy fg amivel fogyasztok egy listát
+;de a fg. 2 paraméteres: amikor először veszem a fejet
+;                        még nincs második paraméter
+;                        ezért kell egy kezdő érték
+;működése:  fogyasztom a listát 
+;           veszem a lista fejét és az eddigi részeredményt
+;           erre hívom meg a függvényt
+
+(define (reduce f2 akku lst)
+    (cond
+        [(empty? lst) akku]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define akku2 (f2 fej akku))
+            (reduce f2 akku2 farok)]))
+(writeln (reduce + 0 (list 1 2 3)))
+
+;subset
+;
+(define (subset A B)
+    (cond
+        [(empty? A) true]
+        [else
+            (define fej (first A))
+            (define farok (rest A))
+            (if (member fej B)
+                (subset farok  B)
+                false)]))
+(writeln (subset (list 1 2 3)(list 3))) ;részhalmaz
+;ami nem hamis az igaz
+;ha az A ures
+;ötlet: segédfg-be beégetem B-t
+(define (subsetv2 A B)
+    (define (segedfg fej akku)
+        (if (member fej B)
+            akku 
+            false))
+    (reduce segedfg true A))
+(writeln (subsetv2 (list 1 2 3)(list 3))) 
+;Unio reduce-al
+(define (unio A B)
+    (cond
+        [(empty? A) B]
+        [else
+            (define fej (first A))
+            (define farok (rest A))
+            (define farok-ertek (unio farok B))
+            (if (member fej B)
+                farok-ertek
+                (cons fej farok-ertek))])) 
+                
+;uni with reduce
+
+(define (uni A B)
+    (define (segedfg fejA akku)
+        (if (member fejA akku)
+            akku
+            (cons fejA akku)))
+    (reduce segedfg B A))
+(writeln (uni (list 1 2 3)(list 3 4 6))) 
+
+;metszet
+(define (inter A B)
+    (cond
+        [(empty? A) empty]
+        [else
+            (define fej (first A))
+            (define farok (rest A))
+            (define farok-ertek (inter farok B))
+            (if (member fej B)
+                (cons fej farok-ertek) 
+                farok-ertek)]))
+(writeln (inter (list 1 2 3 6)(list 3 4 6)))
+
+
+;metszet reduce
+(define (inteRed A B)
+    (define (segedfg fej akku)
+        (if (member fej B)
+            (cons fej akku)
+            akku))
+    (reduce segedfg empty A))
+(writeln (inteRed (list 1 2 3 6)(list 3 4 6)))
+
+
+
+            
