@@ -1,0 +1,58 @@
+(writeln (apply + (list 1 2 3)))
+(define (multiadd . x)
+   apply + x)
+(writeln (multiadd 1 2 3))
+
+;szerződés alapú programozás: design by contract
+;elpre leírom milyen bemenetet várok és ha jó a bemenet, akkor mlyen kimenetet fogok adni
+;a hívó és a hívott között van egy szerződé, ami így hangzik 
+;alapvetően a bemenetre és a kimenetre adok megszorítás
+;bemenet - előfeltétel - precondition kimenet - utófeltétel - postcondition 
+;oop megadja hogy milyen bemenetre és milyen belső állapotra milyen kimenetet és milyen belső állapotváltozást okoz
+;belős állapot oop-ben : mezők pillanatnyi értéke
+;racketben tipus helyett használjuk
+;define/contract fej szerzodes torzs)
+(define/contract
+    (inc x)                 ;fej
+    (-> number? number?)    ;szerződés
+    (+ x 1))                ;torzs
+(writeln (inc 6))
+(define/contract (nns x y)
+    (-> number? number? string?)
+    (string-append (number->string x)(number->string y)))
+(writeln (nns 12 48))
+;szerződés szintaxisa
+;(-> param_1_tipusa param_2_tipusa param_n_tipus kimenet_tipusa)
+;ird meg a list-length fg-t define-/contract 
+
+
+;(define/contract (mylength lst)
+;    (-> list? number?)
+;    (cond
+;        [(empty? lst) 0]
+;        [else
+;            (define fej (first lst))
+;            (define farok (rest lst))
+;            (define farok-ertek (mylength farok))
+;            (+ 1 farok-ertek)]))
+;(writeln (mylength list(1 2 3)))
+
+
+(define/contract (mymap f lst)
+    (-> (-> any/c any/c) list? list?)
+    (map f lst))
+(writeln (mymap inc (list 1 2 3)))
+
+(define/contract (gyök x)
+    (-> (lambda (t) (>= t 0)) number?)
+    (sqrt x))
+(writeln (gyök 16))
+
+;pozitiv kivonas
+;ha a kimenet nagyobb=0
+;olyan négyzetre emelés aminek a bemenete csak 0 és 4 kötörr lehet
+;belertve a 0 és 4
+(define/contract (pov x)
+    (-> (lambda (t) (and (>= t 0)(<= t 4 ))) number?)
+    (* x x))
+(writeln (pov 0))
