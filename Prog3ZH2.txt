@@ -1,0 +1,63 @@
+;Első feladat
+    ;matrix? m irja meg a matrix? fg-t amit igazat ad vissza abban az esetben, hogy ha olyan listak listajat kapja, ahol minden belso lista hossza ugyanannyi más esetben hamis
+    ;(list (list 1 2)(list 3 4)(list 5 6)) erre igaz
+;Masodik - matrix foatloja, ha a matrix nem n*n akkor adjon vissza hamisat
+;Harmadik feladat - Matrix transponalt
+    ;list-ref(lista,index)
+;Negyedik - define/contract-al - irja meg a map fg-t
+;Otodik feldat - reduce-al irja meg a eleme-e?
+
+;1
+(define (matrix? m)
+    (cond
+        [(empty? m) true]
+        [else
+            (define l-lst (map length m))
+            (apply = l-lst)]))
+            
+(writeln (matrix? (list (list 1 2)(list 3 4)(list 5 6))))
+
+
+;2
+(define (diagonal M)
+    (cond
+        [(empty? M)(list )]
+        [else
+            (define indexes (build-list (length M) values))
+            (if (and (matrix? M) (= (length (first M)) (length M)))
+                (map list-ref M indexes)
+                false)]))
+(writeln (diagonal (list (list 1 2 3)(list 3 4 5)(list 6 7 8))))
+
+
+
+;3
+(define (transpose lst)                    
+  (for/list ((i (length (list-ref lst 0)))) 
+    (for/list ((il lst))                   
+      (list-ref il i)))) 
+      
+(writeln (transpose (list (list 1 2)(list 3 4))))
+
+
+
+;4
+(define (inc x)
+    (+ 1 x))
+(define/contract (mymap f lst)
+	(-> (-> any/c any/c) list? list?)
+	(map f lst))
+(writeln (mymap inc (list 1 2 3)))
+
+
+
+;5
+(define (myMem x lst)
+	(define (segedfg fej akku)
+	    (if (= fej x)
+	        true
+            akku))
+        (foldl segedfg false lst))
+(writeln (myMem 2 (list 4 5 6 7)))
+
+
