@@ -1,0 +1,49 @@
+1. 
+(define (fact n)
+    (if (= n 0)
+        1
+        (* n (fact (- n 1)))))
+(writeln (fact 5))
+2.
+(define (paros-length lst)
+    (cond
+        [(empty? lst) 0]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define farok-ertek (paros-length farok))
+            (if (even? fej)
+                (+ 1 farok-ertek)
+                farok-ertek)]))
+(writeln (paros-length (list 1 2 3 4 5 6 7 8)))
+3.
+(define (paros-length2 lst)(paros-length2-akku lst 0))
+(define (paros-length2-akku lst akku)
+    (cond
+        [(empty? lst) akku]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define akku2 (if (even? fej)
+                            (+ 1 akku) akku))
+            (paros-length2-akku farok akku2)]))
+            
+(writeln (paros-length2 (list 1 2 3 4 6 8)))
+4.
+
+5.
+(define (inc x)
+    (+ 1 x))
+    
+(define (pmap p f lst)
+    (cond 
+        [(empty? lst) (list )]
+        [else
+            (define fej (first lst))
+            (define farok (rest lst))
+            (define farok-ertek (pmap p f farok))
+            (if (p fej)
+                (cons (f fej) farok-ertek)
+                (cons fej farok-ertek))]))
+(writeln (pmap odd? inc (list 1 0 3 0 5 0)))
+                
